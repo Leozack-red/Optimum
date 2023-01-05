@@ -34,8 +34,8 @@ module Optimum
     end
 
     def optimal_strateges
-      p "The optimal strategy of first gamer: #{opt_strategy_first_gamer}"
-      p "The optimal strategy of second gamer: #{opt_strategy_second_gamer}"
+      p "The optimal strategy of first gamer: #{opt_strategy(:first)}"
+      p "The optimal strategy of second gamer: #{opt_strategy(:second)}"
       if lower_value == higher_value
         "There is a situation of equilibrium: lower and higher values of game equal #{lower_value}"
       else
@@ -47,38 +47,38 @@ module Optimum
 
     private
 
-    def opt_strategy_first_gamer
-      index = minimums_in_rows.index(lower_value)
-      matrix.row(index)
-    end
-
-    def opt_strategy_second_gamer
-      index = maximums_in_columns.index(higher_value)
-      matrix.column(index)
+    def opt_strategy(gamer_position)
+      if gamer_position == :first
+        index = vector_search(:row).index(lower_value)
+        matrix.row(index)
+      elsif gamer_position == :second
+        index = vector_search(:column).index(higher_value)
+        matrix.column(index)
+      end
     end
 
     def lower_value
-      minimums_in_rows.max
+      vector_search(:row).max
     end
 
     def higher_value
-      maximums_in_columns.min
+      vector_search(:column).min
     end
 
-    def minimums_in_rows
-      (0...count_rows).map { |number| minimum_in_row(number) }
+    def vector_search(vector)
+      if vector == :row
+        (0...count_rows).map { |number| extremum_search(number, :min) }
+      elsif vector == :column
+        (0...count_columns).map { |number| extremum_search(number, :max) }
+      end
     end
 
-    def maximums_in_columns
-      (0...count_columns).map { |number| maximum_in_column(number) }
-    end
-
-    def minimum_in_row(number)
-      matrix.row(number).min
-    end
-
-    def maximum_in_column(number)
-      matrix.column(number).max
+    def extremum_search(number, direction)
+      if direction == :min
+        matrix.row(number).min
+      elsif direction == :max
+        matrix.column(number).max
+      end
     end
   end
 
