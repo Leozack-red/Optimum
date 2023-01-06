@@ -37,6 +37,12 @@ module Optimum
     def result(report = false)
       return report_message if report
 
+      hash_result
+    end
+
+    private
+
+    def hash_result
       {
         first_strategy: opt_strategy(:first),
         second_strategy: opt_strategy(:second),
@@ -45,8 +51,6 @@ module Optimum
         equilibrium: lower_value == higher_value
       }
     end
-
-    private
 
     def report_message
       message = "The optimal strategy of first gamer: #{opt_strategy(:first)}. The optimal strategy of second gamer: #{opt_strategy(:second)}"
