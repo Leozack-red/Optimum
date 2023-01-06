@@ -27,33 +27,44 @@ module Optimum
 
   class MatrixGame
     attr_accessor :matrix, :count_rows, :count_columns
+
     def initialize(rows)
       @matrix = CreateMatrix.create(rows)
       @count_rows = rows.size
       @count_columns = rows.first.size
     end
 
-    def optimal_strateges
-      p "The optimal strategy of first gamer: #{opt_strategy(:first)}"
-      p "The optimal strategy of second gamer: #{opt_strategy(:second)}"
-      if lower_value == higher_value
-        "There is a situation of equilibrium: lower and higher values of game equal #{lower_value}"
-      else
-        p "Lower value: #{lower_value}"
-        p "Higher value: #{higher_value}"
-        "No situation of equilibrium"
-      end
+    def result(report = false)
+      return report_message if report
+
+      {
+        first_strategy: opt_strategy(:first),
+        second_strategy: opt_strategy(:second),
+        lower_value: lower_value,
+        higher_value: higher_value,
+        equilibrium: lower_value == higher_value
+      }
     end
 
     private
 
+    def report_message
+      message = "The optimal strategy of first gamer: #{opt_strategy(:first)}. The optimal strategy of second gamer: #{opt_strategy(:second)}"
+      if lower_value == higher_value
+        message + "There is a situation of equilibrium: lower and higher values of game equal #{lower_value}"
+      else
+        message + "Lower value: #{lower_value}. Higher value: #{higher_value}. No situation of equilibrium"
+      end
+    end
+
     def opt_strategy(gamer_position)
-      if gamer_position == :first
+      case gamer_position
+      when :first
         index = vector_search(:row).index(lower_value)
-        matrix.row(index)
-      elsif gamer_position == :second
+        matrix.row(index).to_a
+      when :second
         index = vector_search(:column).index(higher_value)
-        matrix.column(index)
+        matrix.column(index).to_a
       end
     end
 
@@ -66,17 +77,19 @@ module Optimum
     end
 
     def vector_search(vector)
-      if vector == :row
+      case vector
+      when :row
         (0...count_rows).map { |number| extremum_search(number, :min) }
-      elsif vector == :column
+      when :column
         (0...count_columns).map { |number| extremum_search(number, :max) }
       end
     end
 
     def extremum_search(number, direction)
-      if direction == :min
+      case direction
+      when :min
         matrix.row(number).min
-      elsif direction == :max
+      when :max
         matrix.column(number).max
       end
     end
