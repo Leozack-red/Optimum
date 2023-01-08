@@ -104,4 +104,28 @@ module Optimum
       Matrix.send(:new, rows)
     end
   end
+
+  class CoalitionsCoefficients
+    attr_accessor :number_players
+    def initialize(number_players)
+      @number_players = number_players.to_f
+    end
+
+    def call
+      coefficients
+    end
+
+    private
+
+    def coefficients
+      (0...number_players).map do |coalition_power|
+        numerator = factorial(coalition_power) * factorial(number_players - coalition_power - 1)
+        numerator.to_f/factorial(number_players).to_f
+      end
+    end
+
+    def factorial(n)
+      (1..n).inject(1, :*)
+    end
+  end
 end

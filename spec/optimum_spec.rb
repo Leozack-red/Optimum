@@ -65,4 +65,24 @@ RSpec.describe Optimum do
       end
     end
   end
+
+  describe  Optimum::CoalitionsCoefficients do
+    subject { Optimum::CoalitionsCoefficients.new(number_players).call }
+
+    context "with 3 number players" do
+      let(:number_players) { 3 }
+
+      it "return array of coefficients for coalitions" do
+        expect(subject).to match_array([1.0/3.0, 1.0/6.0, 1.0/3.0])
+      end
+    end
+
+    context "with 4 number players" do
+      let(:number_players) { 4 }
+
+      it "return array of coefficients for coalitions" do
+        expect(subject).to match_array([1.0/4.0, 1.0/12.0, 1.0/12.0, 1.0/4.0])
+      end
+    end
+  end
 end
