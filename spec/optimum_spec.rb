@@ -84,5 +84,13 @@ RSpec.describe Optimum do
         expect(subject).to match_array([1.0 / 4.0, 1.0 / 12.0, 1.0 / 12.0, 1.0 / 4.0])
       end
     end
+
+    context "with limit value" do
+      let(:number_players) { Optimum::CoalitionsCoefficients::LIMIT_VALUE }
+
+      it "raise exception" do
+        expect { subject }.to raise_error(Optimum::Error)
+      end
+    end
   end
 end

@@ -108,11 +108,14 @@ module Optimum
   class CoalitionsCoefficients
     attr_accessor :number_players
 
+    LIMIT_VALUE = 171
+
     def initialize(number_players)
       @number_players = number_players.to_f
     end
 
     def call
+      validate_number
       coefficients
     end
 
@@ -127,6 +130,13 @@ module Optimum
 
     def factorial(n)
       (1..n).inject(1, :*)
+    end
+
+    def validate_number
+      return unless number_players >= LIMIT_VALUE
+
+      raise Error,
+            "The players is #{LIMIT_VALUE} or more. You should reduce the number of players"
     end
   end
 end
