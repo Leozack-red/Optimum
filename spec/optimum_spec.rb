@@ -46,7 +46,7 @@ RSpec.describe Optimum do
 
     context "with strategies for equilibrium and no report" do
       subject { Optimum::MatrixGame.new(strategies).result }
-      let(:strategies) { [[2, 1], [2, 0,]] }
+      let(:strategies) { [[2, 1], [2, 0]] }
 
       it "will find optimal strategies" do
         expect(subject[:first_strategy]).to match_array strategies[0]
@@ -73,7 +73,7 @@ RSpec.describe Optimum do
       let(:number_players) { 3 }
 
       it "return array of coefficients for coalitions" do
-        expect(subject).to match_array([1.0/3.0, 1.0/6.0, 1.0/3.0])
+        expect(subject).to match_array([1.0 / 3.0, 1.0 / 6.0, 1.0 / 3.0])
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Optimum do
       let(:number_players) { 4 }
 
       it "return array of coefficients for coalitions" do
-        expect(subject).to match_array([1.0/4.0, 1.0/12.0, 1.0/12.0, 1.0/4.0])
+        expect(subject).to match_array([1.0 / 4.0, 1.0 / 12.0, 1.0 / 12.0, 1.0 / 4.0])
       end
     end
   end
