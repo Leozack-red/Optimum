@@ -179,5 +179,26 @@ RSpec.describe Optimum do
         expect { subject }.to raise_error(Optimum::Error)
       end
     end
+
+    context "with 3-players game and very small gains" do
+      subject { Optimum::ShapleyValue.new(coalitions, number_players, round).resolve }
+      let(:number_players) { 3 }
+      let(:coalitions) do
+        {
+          a: 0.00234,
+          b: 0.2341,
+          c: 0.000001234,
+          ab: 0.753,
+          ac: 0.107539,
+          bc: 0.3453400345,
+          abc: 1.957650912873
+        }
+      end
+      let(:round) { 7 }
+
+      it "return Shapley Value" do
+        expect(subject).to match_array([0.4376239, 0.6426233, 0.8774038])
+      end
+    end
   end
 end
