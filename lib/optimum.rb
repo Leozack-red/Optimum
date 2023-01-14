@@ -177,7 +177,7 @@ module Optimum
     end
 
     def validate_input
-      raise Error, "Not find coalitions" if coalitions.empty?
+      raise Error, "Not find coalitions" if coalitions.nil? || coalitions.empty?
       raise Error, "Not find number of players" if number_players.nil?
     end
 

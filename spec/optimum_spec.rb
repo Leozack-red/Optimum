@@ -151,5 +151,33 @@ RSpec.describe Optimum do
         expect(subject).to match_array([5000, 3750, 1250])
       end
     end
+
+    context "with missing of number of players will return error" do
+      let(:number_players) { nil }
+      let(:coalitions) do
+        {
+          a: 5000,
+          b: 5000,
+          c: 0,
+          ab: 7500,
+          ac: 7500,
+          bc: 5000,
+          abc: 10_000
+        }
+      end
+
+      it "raise exception" do
+        expect { subject }.to raise_error(Optimum::Error)
+      end
+    end
+
+    context "with missing of coalitions of players will return error" do
+      let(:number_players) { 3 }
+      let(:coalitions) { nil }
+
+      it "raise exception" do
+        expect { subject }.to raise_error(Optimum::Error)
+      end
+    end
   end
 end
