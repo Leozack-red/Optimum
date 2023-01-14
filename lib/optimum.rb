@@ -105,6 +105,58 @@ module Optimum
     end
   end
 
+  class ShapleyValue
+    attr_accessor :coalitions, :number_players, :coefficients
+    def initialize(coalitions, number_players)
+      @coalitions = coalitions
+      @number_players = number_players
+      @coefficients = Optimum::CoalitionsCoefficients.new(number_players).call
+    end
+
+    def resolve
+      validate_input
+      validate_coefficients
+      validate_grand_coalition
+
+      0..number_players-1.each do |number|
+        name_player = singleton_coalitions[number].first
+        cost_single_player = singleton_coalitions[number].last
+
+        coalitions_with_player(name_player).map do |coalition, value|
+          
+        end
+      end
+    end
+
+    private
+
+    def singleton_coalitions
+      coalitions.select { |key, _value| key.lenght == 1 }.to_a
+    end
+
+    def coalitions_with_player(name_player)
+      coalitions.select { |key, _value| key.include?(name_player) }
+    end
+
+    def validate_coefficients
+      raise Error, "Not find coefficients" if coefficients.blank?
+    end
+
+    def validate_grand_coalition
+      names_singleton_coalitions = singleton_coalitions.map { |coalition| coalition.first }
+      raise Error, "Not find grand coalition or no several singletons coalitions is defined" unless coalitions[names_singleton_coalitions.join(", ")]
+    end
+
+    def validate_input
+      raise Error, "Not find coalitions" if coalitions.blank?
+      raise Error, "Not find number of players" if number_players.blank?
+    end
+
+    def validate_shapley_value
+
+    end
+  end
+
   class CoalitionsCoefficients
     attr_accessor :number_players
 
@@ -116,7 +168,7 @@ module Optimum
 
     def call
       validate_number
-      coefficients
+      coefficients if number_players == coefficients.size
     end
 
     private
