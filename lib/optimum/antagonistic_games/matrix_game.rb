@@ -13,7 +13,7 @@ module Optimum
         @count_columns = rows.first.size
       end
 
-      def result(report = false)
+      def result(report: false)
         return report_message if report
 
         hash_result

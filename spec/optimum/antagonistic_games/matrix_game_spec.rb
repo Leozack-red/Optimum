@@ -29,7 +29,7 @@ RSpec.describe Optimum::AntagonisticGames::MatrixGame do
   end
 
   context "with strategies and report" do
-    subject { Optimum::AntagonisticGames::MatrixGame.new(strategies).result(report = true) }
+    subject { Optimum::AntagonisticGames::MatrixGame.new(strategies).result(report: true) }
 
     it "will find optimal strategies and send a report" do
       expect(subject).to be_kind_of(String)
